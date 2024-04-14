@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,12 +39,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
         TextView name;
         TextView date;
         TextView phones;
+        ImageButton favoriteIcon;
 
         public Item(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             date = itemView.findViewById(R.id.date);
             phones = itemView.findViewById(R.id.phones);
+            favoriteIcon = itemView.findViewById(R.id.favorite_icon);
         }
     }
 
@@ -62,6 +65,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
             phones.append(p).append("\n");
         }
         holder.phones.setText(phones);
+
+        holder.favoriteIcon.setOnClickListener(v -> {
+            // Toggle favorite status of contact here
+            // Update UI accordingly
+        });
     }
 
     @Override
