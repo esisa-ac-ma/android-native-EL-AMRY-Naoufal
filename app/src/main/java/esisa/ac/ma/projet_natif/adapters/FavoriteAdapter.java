@@ -13,7 +13,7 @@ import java.util.List;
 import esisa.ac.ma.projet_natif.R;
 import esisa.ac.ma.projet_natif.entities.Favorite;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>  {
 
     private List<Favorite> favorites;
 
