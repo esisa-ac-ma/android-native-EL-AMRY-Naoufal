@@ -40,6 +40,11 @@ public class FavoriteFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(favoriteAdapter);
         favoriteDao = AppDatabase.getInstance(getContext()).favoriteDao();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         loadFavorites();
     }
 
