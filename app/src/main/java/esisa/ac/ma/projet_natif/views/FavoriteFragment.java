@@ -47,13 +47,8 @@ public class FavoriteFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Check if favoriteDao is null
                 if (favoriteDao != null) {
-                    // Retrieve favorites from the database asynchronously
                     List<Favorite> favorites = favoriteDao.getAll();
-                    Log.d("favorie ftratgmen,et", "Contact: " + favorites);
-
-
                     // Update UI on the main thread
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
