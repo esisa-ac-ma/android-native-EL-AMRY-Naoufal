@@ -30,6 +30,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
     private Context context;
     private FavoriteDao favoriteDao;
 
+
     public Vector<Contact> getModel() {
         return model;
     }
@@ -40,7 +41,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
         contactDao = new ContactDao(context);
         favoriteDao = AppDatabase.getInstance(context).favoriteDao();
         model = contactDao.getVcontact();
-       System.out.println(model);
+        System.out.println(model);
     }
 
 
@@ -77,12 +78,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
         }
         holder.phones.setText(phones);
 
-        boolean isFavorite = checkIfFavorite(contact);
-        if (isFavorite) {
-            holder.favoriteIcon.setImageResource(R.drawable.favorite);
-        } else {
-            holder.favoriteIcon.setImageResource(R.drawable.favorite);
-        }
+        // Check if the contact is a favorite asynchronously
+        checkIfFavorite(contact, new OnCheckFavoriteListener() {
+            @Override
+            public void onCheckFavorite(boolean isFavorite) {
+                if (isFavorite) {
+                    holder.favoriteIcon.setImageResource(R.drawable.favorite);
+                } else {
+                    holder.favoriteIcon.setImageResource(R.drawable.favorite);
+                }
+            }
+        });
 
         holder.favoriteIcon.setOnClickListener(v -> {
             toggleFavorite(contact);
@@ -95,15 +101,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
         return model.size();
     }
 
-    private boolean checkIfFavorite(Contact contact) {
-        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+    private void checkIfFavorite(Contact contact, OnCheckFavoriteListener listener) {
+        new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... voids) {
-                // Perform database operation asynchronously
+                // Retrieve favorites from the database asynchronously
                 List<Favorite> favorites = favoriteDao.getAll();
+
                 // Check if the contact is a favorite
                 for (Favorite favorite : favorites) {
-                    Log.d("ToggleFavorite", "Contact: " + favorite.getName() + ", Phone: " + favorite.getPhone());
                     if (favorite.getPhone().equals(contact.getPhones().get(0))) {
                         return true;
                     }
@@ -113,20 +119,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
 
             @Override
             protected void onPostExecute(Boolean isFavorite) {
-                // Handle the result here
-                // Update UI if needed
-                // For example:
-                if (isFavorite) {
-                    // Set favorite icon
-                } else {
-                    // Set non-favorite icon
-                }
+                // Call the listener with the result
+                listener.onCheckFavorite(isFavorite);
             }
-        };
-        // Execute the AsyncTask
-        task.execute();
-        return false; // Return default value
+        }.execute();
     }
+
 
     private void toggleFavorite(Contact contact) {
         new Thread(new Runnable() {
@@ -134,7 +132,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
             public void run() {
                 // Access the database and perform operations asynchronously
                 FavoriteDao favoriteDao = AppDatabase.getInstance(context).favoriteDao();
-                boolean isFavorite = checkIfFavorite(contact);
+                boolean isFavorite = checkIfFavoriteSync(contact);
+                Log.d("Contact Adapter", "isFavorite : " + isFavorite);
                 if (isFavorite) {
                     // Remove contact from favorites
                     Favorite favorite = new Favorite();
@@ -163,4 +162,23 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
         }
         return false;
     }
+
+    private boolean checkIfFavoriteSync(Contact contact) {
+        // Retrieve favorites from the database synchronously
+        List<Favorite> favorites = favoriteDao.getAll();
+
+        // Check if the contact is a favorite
+        for (Favorite favorite : favorites) {
+            if (favorite.getPhone().equals(contact.getPhones().get(0))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Listener interface for asynchronous checkIfFavorite method
+    interface OnCheckFavoriteListener {
+        void onCheckFavorite(boolean isFavorite);
+    }
+
 }
