@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Telephony;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import esisa.ac.ma.projet_natif.entities.Sms;
@@ -19,8 +17,8 @@ public class SmsDao {
         this.context = context;
     }
 
-    public Map<String, List<Sms>> getAllSmsGroupedByContact() {
-        Map<String, List<Sms>> smsMap = new HashMap<>();
+    public Map<String, Sms> getAllSmsGroupedByContact() {
+        Map<String, Sms> smsMap = new HashMap<>();
         Uri uri = Uri.parse("content://sms/");
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -35,13 +33,13 @@ public class SmsDao {
                 String message = cursor.getString(bodyIndex);
                 long timestamp = cursor.getLong(dateIndex);
 
-                // Check if there's already a list of messages for this contact
-                if (smsMap.containsKey(senderPhoneNumber)) {
-                    smsMap.get(senderPhoneNumber).add(new Sms(senderName, message, timestamp));
-                } else {
-                    List<Sms> smsList = new ArrayList<>();
-                    smsList.add(new Sms(senderName, message, timestamp));
-                    smsMap.put(senderPhoneNumber, smsList);
+                // Check if column indices are valid
+                if (personIndex != -1 && addressIndex != -1 && bodyIndex != -1 && dateIndex != -1) {
+                    Sms sms = new Sms(senderName, message, timestamp);
+                    // Check if there's already a message for this contact
+                    if (!smsMap.containsKey(senderPhoneNumber) || sms.getTimestamp() > smsMap.get(senderPhoneNumber).getTimestamp()) {
+                        smsMap.put(senderPhoneNumber, sms);
+                    }
                 }
             } while (cursor.moveToNext());
 
