@@ -43,14 +43,9 @@ public class ContactDao {
                     c.setName(name);
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-                    Log.e("contact Dao", "calls count : " + getCallsCountForContact(id));
-                    Log.e("contact Dao", "sms count : " + getSMSCountForContact(id));
-
                     c.setDate(simpleDateFormat.format(new Date(date)));
                     c.setPhones(getPhones(id));
                     c.setEmails(getEmails(id));
-                    Log.e("contact Dao", "calls count : " + getCallsCountForContact(c.getPhones().get(0)));
-                    Log.e("contact Dao", "sms count : " + getSMSCountForContact(c.getPhones().get(0)));
 
                     vcontact.add(c);
                     }
