@@ -36,7 +36,7 @@ public class FavoriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.favorite_recycler);
-        favoriteAdapter = new FavoriteAdapter();
+        favoriteAdapter = new FavoriteAdapter(getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(favoriteAdapter);
         favoriteDao = AppDatabase.getInstance(getContext()).favoriteDao();
