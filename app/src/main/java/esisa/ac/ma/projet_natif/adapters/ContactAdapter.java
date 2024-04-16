@@ -145,6 +145,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Item> {
                         Favorite favorite = new Favorite();
                         favorite.setPhone(contact.getPhones().get(0));
                         favorite.setName(contact.getName());
+                        favorite.setCalls(contactDao.getCallsCountForContact(contact.getPhones().get(0)));
+                        favorite.setSms(contactDao.getSMSCountForContact(contact.getPhones().get(0)));
                         favoriteDao.add(favorite);
                     }
                 }
