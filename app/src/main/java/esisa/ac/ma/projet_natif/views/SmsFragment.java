@@ -40,6 +40,15 @@ public class SmsFragment extends Fragment {
         smsDao = new SmsDao(requireContext());
         Map<String, Sms> smsMap = smsDao.getAllSmsGroupedByContact();
 
+        for (Map.Entry<String, Sms> entry : smsMap.entrySet()) {
+            String senderPhoneNumber = entry.getKey();
+            Sms sms = entry.getValue();
+
+            Log.d("SmsFragment", "Sender Phone Number: " + senderPhoneNumber);
+            Log.d("SmsFragment", "Message: " + sms.getMessage());
+            Log.d("SmsFragment", "Timestamp: " + sms.getTimestamp());
+        }
+
         List<Sms> smsList = new ArrayList<>(smsMap.values());
         SmsAdapter smsAdapter = new SmsAdapter(smsList);
         recyclerView.setAdapter(smsAdapter);
@@ -49,8 +58,7 @@ public class SmsFragment extends Fragment {
             public void onItemClick(int position) {
                 Sms clickedSms = smsList.get(position);
                 // Example: Log the sender and message of the clicked SMS
-                Log.d("SmsFragment", "Clicked SMS Sender: " + clickedSms.getSender());
-                Log.d("SmsFragment", "Clicked SMS Message: " + clickedSms.getMessage());
+
             }
         });
     }
