@@ -1,5 +1,7 @@
 package esisa.ac.ma.projet_natif.entities;
 
+import androidx.annotation.NonNull;
+
 public class Sms {
     private String numberPhone;
     private String sender;
@@ -52,5 +54,11 @@ public class Sms {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Number phone : " + numberPhone + " || Sender : " + sender + " || Message" + message;
     }
 }
