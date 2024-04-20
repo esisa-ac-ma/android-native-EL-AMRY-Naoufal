@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,6 +72,11 @@ public class SmsFragment extends Fragment {
 
                 args.putSerializable("fullConversation", (Serializable) fullConversation);
                 conversationFragment.setArguments(args);
+
+                View fragmentContainer = requireActivity().findViewById(R.id.fragment_container);
+                if (fragmentContainer != null) {
+                    fragmentContainer.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.black));
+                }
 
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, conversationFragment);
