@@ -35,7 +35,7 @@ public class SmsDao {
 
                 // Check if column indices are valid
                 if (personIndex != -1 && addressIndex != -1 && bodyIndex != -1 && dateIndex != -1) {
-                    Sms sms = new Sms(senderName, message, timestamp);
+                    Sms sms = new Sms(senderPhoneNumber, senderName, message, timestamp);
                     // Check if there's already a message for this contact
                     if (!smsMap.containsKey(senderPhoneNumber) || sms.getTimestamp() > smsMap.get(senderPhoneNumber).getTimestamp()) {
                         smsMap.put(senderPhoneNumber, sms);
