@@ -1,6 +1,7 @@
 package esisa.ac.ma.projet_natif.views;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,19 +57,25 @@ public class SmsFragment extends Fragment {
         smsAdapter.setOnItemClickListener(new SmsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                // When an item is clicked, retrieve the full conversation
-                List<Sms> fullConversation = new ArrayList<>();
+                // When an item is clicked, retrieve the full conversation and navigate to ConversationFragment
                 Sms clickedSms = lastSmsList.get(position);
                 String phoneNumber = clickedSms.getNumberPhone();
                 if (smsMap.containsKey(phoneNumber)) {
-                    fullConversation.addAll(smsMap.get(phoneNumber));
+                    // Navigate to ConversationFragment and pass the full conversation as arguments
+                    navigateToConversationFragment(smsMap.get(phoneNumber));
                 }
+            }
+            private void navigateToConversationFragment(List<Sms> fullConversation) {
+                ConversationFragment conversationFragment = new ConversationFragment();
+                Bundle args = new Bundle();
 
-                for (Sms sms : fullConversation) {
-                    Log.d("FullConversation", "Sender Phone Number: " + sms.getNumberPhone());
-                    Log.d("FullConversation", "Message: " + sms.getMessage());
-                    Log.d("FullConversation", "Timestamp: " + sms.getTimestamp());
-                }
+                args.putSerializable("fullConversation", (Serializable) fullConversation);
+                conversationFragment.setArguments(args);
+
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, conversationFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }
