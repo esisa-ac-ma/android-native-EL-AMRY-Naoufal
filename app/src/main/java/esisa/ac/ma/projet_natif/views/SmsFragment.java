@@ -57,7 +57,6 @@ public class SmsFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Sms clickedSms = smsList.get(position);
-                // Example: Log the sender and message of the clicked SMS
 
             }
         });
