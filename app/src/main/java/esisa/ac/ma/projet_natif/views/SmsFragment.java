@@ -40,24 +40,33 @@ public class SmsFragment extends Fragment {
         smsDao = new SmsDao(requireContext());
         Map<String, List<Sms>> smsMap = smsDao.getAllSmsGroupedByContact();
 
-        List<Sms> allSmsList = new ArrayList<>();
+        List<Sms> lastSmsList = new ArrayList<>();
         for (List<Sms> smsList : smsMap.values()) {
-            allSmsList.addAll(smsList);
+            if (!smsList.isEmpty()) {
+                Sms lastSms = smsList.get(smsList.size() - 1);
+                lastSmsList.add(lastSms);
+            }
         }
 
-        for (Sms sms : allSmsList) {
-            Log.d("SmsFragment", "Sender Phone Number: " + sms.getNumberPhone() + "Length : " + allSmsList.size());
-            Log.d("SmsFragment", "Message: " + sms.getMessage());
-            Log.d("SmsFragment", "Timestamp: " + sms.getTimestamp());
-        }
-        SmsAdapter smsAdapter = new SmsAdapter(allSmsList);
+        SmsAdapter smsAdapter = new SmsAdapter(lastSmsList);
         recyclerView.setAdapter(smsAdapter);
 
         smsAdapter.setOnItemClickListener(new SmsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Sms clickedSms = allSmsList.get(position);
+                // When an item is clicked, retrieve the full conversation
+                List<Sms> fullConversation = new ArrayList<>();
+                Sms clickedSms = lastSmsList.get(position);
+                String phoneNumber = clickedSms.getNumberPhone();
+                if (smsMap.containsKey(phoneNumber)) {
+                    fullConversation.addAll(smsMap.get(phoneNumber));
+                }
 
+                for (Sms sms : fullConversation) {
+                    Log.d("FullConversation", "Sender Phone Number: " + sms.getNumberPhone());
+                    Log.d("FullConversation", "Message: " + sms.getMessage());
+                    Log.d("FullConversation", "Timestamp: " + sms.getTimestamp());
+                }
             }
         });
     }
