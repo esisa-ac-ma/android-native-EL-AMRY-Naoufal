@@ -22,4 +22,11 @@
        android:id="@+id/view_pager"
        />
 
+   <FrameLayout
+       android:id="@+id/fragment_container"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_below="@id/table_layout"
+       android:layout_marginTop="16dp"
+       android:layout_marginBottom="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
