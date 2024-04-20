@@ -38,25 +38,25 @@ public class SmsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         smsDao = new SmsDao(requireContext());
-        Map<String, Sms> smsMap = smsDao.getAllSmsGroupedByContact();
+        Map<String, List<Sms>> smsMap = smsDao.getAllSmsGroupedByContact();
 
-        for (Map.Entry<String, Sms> entry : smsMap.entrySet()) {
-            String senderPhoneNumber = entry.getKey();
-            Sms sms = entry.getValue();
+        List<Sms> allSmsList = new ArrayList<>();
+        for (List<Sms> smsList : smsMap.values()) {
+            allSmsList.addAll(smsList);
+        }
 
-            Log.d("SmsFragment", "Sender Phone Number: " + senderPhoneNumber);
+        for (Sms sms : allSmsList) {
+            Log.d("SmsFragment", "Sender Phone Number: " + sms.getNumberPhone() + "Length : " + allSmsList.size());
             Log.d("SmsFragment", "Message: " + sms.getMessage());
             Log.d("SmsFragment", "Timestamp: " + sms.getTimestamp());
         }
-
-        List<Sms> smsList = new ArrayList<>(smsMap.values());
-        SmsAdapter smsAdapter = new SmsAdapter(smsList);
+        SmsAdapter smsAdapter = new SmsAdapter(allSmsList);
         recyclerView.setAdapter(smsAdapter);
 
         smsAdapter.setOnItemClickListener(new SmsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Sms clickedSms = smsList.get(position);
+                Sms clickedSms = allSmsList.get(position);
 
             }
         });
