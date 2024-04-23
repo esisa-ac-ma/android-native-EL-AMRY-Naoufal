@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] titles;
     private ActivityMainBinding binding;
     private ManageFavorite manageFavorite;
-    static final int[] icon_id={R.drawable.contact,R.drawable.sms,R.drawable.call_log,R.drawable.favorite};
+    static final int[] icon_id={R.drawable.contact,R.drawable.sms,R.drawable.call_log, R.drawable.favorite, R.drawable.export};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
