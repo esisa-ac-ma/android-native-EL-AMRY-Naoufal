@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] titles;
     private ActivityMainBinding binding;
     private ManageFavorite manageFavorite;
-    static final int[] icon_id={R.drawable.contact,R.drawable.sms,R.drawable.call_log, R.drawable.favorite, R.drawable.export};
+    static final int[] icon_id={R.drawable.contact,R.drawable.sms,R.drawable.call_log, R.drawable.favorite};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int i) {
+                Log.d("room_data_test",titles[i]);
+
                 tab.setText(titles[i]);
                 tab.setIcon(icon_id[i]);
             }
