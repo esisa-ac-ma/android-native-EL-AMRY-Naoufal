@@ -28,4 +28,14 @@
        android:layout_height="0dp"
        app:layout_constraintTop_toBottomOf="@id/table_layout"
        app:layout_constraintBottom_toBottomOf="parent" />
+
+   <Button
+       android:id="@+id/exportButton"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Export Data"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:onClick="exportData" />
 </androidx.constraintlayout.widget.ConstraintLayout>
