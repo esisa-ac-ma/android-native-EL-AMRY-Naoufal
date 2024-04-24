@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +73,9 @@ public class SmsFragment extends Fragment {
 
                 args.putSerializable("fullConversation", (Serializable) fullConversation);
                 conversationFragment.setArguments(args);
+
+                Button exportButton = requireActivity().findViewById(R.id.exportButton);
+                exportButton.setVisibility(View.GONE);
 
                 View fragmentContainer = requireActivity().findViewById(R.id.fragment_container);
                 if (fragmentContainer != null) {
