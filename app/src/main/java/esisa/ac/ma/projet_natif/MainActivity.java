@@ -2,6 +2,8 @@ package esisa.ac.ma.projet_natif;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import java.util.List;
 import esisa.ac.ma.projet_natif.adapters.FragmentAdapter;
 import esisa.ac.ma.projet_natif.databinding.ActivityMainBinding;
 import esisa.ac.ma.projet_natif.entities.Favorite;
+import esisa.ac.ma.projet_natif.export.FirebaseExporter;
 import esisa.ac.ma.projet_natif.services.ManageFavorite;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ManageFavorite manageFavorite;
     static final int[] icon_id={R.drawable.contact,R.drawable.sms,R.drawable.call_log, R.drawable.favorite};
+
+    private FirebaseExporter firebaseExporter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("room_data_test",manageFavorite.getAll().toString());
     }
+
+    public void exportData(View view) {
+        Log.d("MainActivity", "Export Data button pressed");
+        //firebaseExporter.exportDataToFirebase();
+        //Toast.makeText(this, "Data exported to Firebase", Toast.LENGTH_SHORT).show();
+
+    }
+
     public void init(){
         List<Favorite> results=manageFavorite.getAll();
         if (results.isEmpty()){
