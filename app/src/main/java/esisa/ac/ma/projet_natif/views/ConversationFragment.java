@@ -60,6 +60,8 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Button exportButton = requireActivity().findViewById(R.id.exportButton);
+        exportButton.setVisibility(View.VISIBLE);
         View fragmentContainer = requireActivity().findViewById(R.id.fragment_container);
         if (fragmentContainer != null) {
             fragmentContainer.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent));
