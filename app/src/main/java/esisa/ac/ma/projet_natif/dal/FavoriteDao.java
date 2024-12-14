@@ -1,6 +1,7 @@
 package esisa.ac.ma.projet_natif.dal;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import java.util.List;
@@ -11,5 +12,8 @@ public interface FavoriteDao {
     List<Favorite> getAll();
     @Insert
     void add(Favorite favorite);
+
+    @Delete
+    void delete(Favorite favorite);
 
 }

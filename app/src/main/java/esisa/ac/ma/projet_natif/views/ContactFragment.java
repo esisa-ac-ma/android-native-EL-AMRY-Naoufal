@@ -33,19 +33,17 @@ public class ContactFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView=view.findViewById(R.id.contact_recycler);
-        launcher=registerForActivityResult(new ActivityResultContracts.RequestPermission(),
-                isGranted->{
-                        if (isGranted){
-                            System.out.println("In contact");
-                            contactAdapter = new ContactAdapter(getActivity());
-                            recyclerView.setAdapter(contactAdapter);
-                            DividerItemDecoration dividerItem= new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
-                            recyclerView.addItemDecoration(dividerItem);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        }
-                }
-                );
+        recyclerView = view.findViewById(R.id.contact_recycler);
+        launcher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        contactAdapter = new ContactAdapter(getActivity());
+                        recyclerView.setAdapter(contactAdapter);
+                        DividerItemDecoration dividerItem = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+                        recyclerView.addItemDecoration(dividerItem);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    }
+                });
         launcher.launch((Manifest.permission.READ_CONTACTS));
     }
 }

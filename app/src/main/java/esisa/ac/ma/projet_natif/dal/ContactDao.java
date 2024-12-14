@@ -10,9 +10,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 import esisa.ac.ma.projet_natif.entities.Contact;
+
+import android.provider.CallLog;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Contacts;
+import android.provider.Telephony;
+import android.util.Log;
+
 public class ContactDao {
     private final Vector<Contact> vcontact = new Vector<>();
     private final Context ctx;
@@ -38,10 +43,10 @@ public class ContactDao {
                     c.setName(name);
                     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-
                     c.setDate(simpleDateFormat.format(new Date(date)));
                     c.setPhones(getPhones(id));
                     c.setEmails(getEmails(id));
+
                     vcontact.add(c);
                     }
                 }
@@ -72,6 +77,42 @@ public class ContactDao {
             }
         }
         return emails;
+    }
+
+    public int getSMSCountForContact(String phoneNumber) {
+        int smsCount = 0;
+        Cursor cursor = ctx.getContentResolver().query(Telephony.Sms.CONTENT_URI, null, null, null, null);
+        if (cursor != null) {
+            int addressIndex = cursor.getColumnIndex(Telephony.Sms.ADDRESS);
+            if (addressIndex != -1) {
+                while (cursor.moveToNext()) {
+                    String address = cursor.getString(addressIndex);
+                    if (phoneNumber.equals(address)) {
+                        smsCount++;
+                    }
+                }
+            }
+            cursor.close();
+        }
+        return smsCount;
+    }
+
+    public int getCallsCountForContact(String phoneNumber) {
+        int callsCount = 0;
+        Cursor cursor = ctx.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, null);
+        if (cursor != null) {
+            int numberIndex = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+            if (numberIndex != -1) {
+                while (cursor.moveToNext()) {
+                    String number = cursor.getString(numberIndex);
+                    if (phoneNumber.equals(number)) {
+                        callsCount++;
+                    }
+                }
+            }
+            cursor.close();
+        }
+        return callsCount;
     }
 }
 
